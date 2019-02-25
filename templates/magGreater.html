@@ -10,15 +10,26 @@
 
 <h3>Time taken thru redis : {{ t1 }}</h3>
     <h2>Count using redis : {{ re1 }}</h2>
-
-    <hr>
+<hr>
     <p> Question 8</p>
-    <b> Count of counties : {{ data|length }}</b>
+    <b> Count of states : {{ data|length }} and time : {{ t }}</b>
 
 {% for i in data %}
 <table border=1>
 <tr>
 <td> {{ i["county"] }} </td>
+</tr>
+</table>
+{% endfor %}
+
+    <hr>
+    <p> Question 9</p>
+    <b> Count of states : {{ data1|length }} and time : {{ t1 }}</b>
+
+{% for i in data1 %}
+<table border=1>
+<tr>
+<td> {{ i["state"] }} </td>
 </tr>
 </table>
 {% endfor %}

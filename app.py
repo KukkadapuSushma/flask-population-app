@@ -83,10 +83,50 @@ def qstn8():
     query = "select county from dbo.county where state =(Select state from codes where code ="+"'"+tag1+"')"
     if request.method == 'POST':
         print(query)
+        s = time()
         cursor.execute(query)
         r = cursor.fetchall()
         print(r)
-    return render_template('magGreater.html', data=r)
+    e = time()
+    t = e-s
+    return render_template('magGreater.html', data=r, t=t)
+
+
+@app.route('/qstn9', methods=['GET', 'POST'])
+def qstn9():
+    tag1 = request.form['tag1']
+    tag2 = request.form['tag2']
+    year = request.form['y']
+    if year == '2010':
+        year = 'ten'
+    if year == '2011':
+        year = 'eleven'
+    if year == '2012':
+        year = 'twelve'
+    if year == '2013':
+        year = 'thirteen'
+    if year == '2014':
+        year = 'fourteen'
+    if year == '2015':
+        year = 'fifteen'
+    if year == '2016':
+        year = 'sixteen'
+    if year == '2017':
+        year = 'seventeen'
+    if year == '2018':
+        year = 'eighteen'
+    s = time()
+
+    query = "select state from popul where "+year+" BETWEEN " +"'"+tag1+"'"+ " AND " + "'"+tag2+"'"
+    if request.method == 'POST':
+        print(query)
+        cursor.execute(query)
+        r = cursor.fetchall()
+        print(r)
+    e = time()
+    t = e-s
+    return render_template('magGreater.html', data1=r, t1=t)
+
 
 @app.route('/serverCache', methods=['GET', 'POST'])
 def serverCache():
