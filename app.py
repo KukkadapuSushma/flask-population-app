@@ -76,6 +76,18 @@ def server():
     t = e-s
     return render_template('magGreater.html', t=str(t), re=r)
 
+
+@app.route('/qstn8', methods=['GET', 'POST'])
+def qstn8():
+    tag1 = request.form['tag8']
+    query = "select county from dbo.county where state =(Select state from codes where code ="+"'"+tag1+"')"
+    if request.method == 'POST':
+        print(query)
+        cursor.execute(query)
+        r = cursor.fetchall()
+        print(r)
+    return render_template('magGreater.html', data=r)
+
 @app.route('/serverCache', methods=['GET', 'POST'])
 def serverCache():
     tag1 = request.form['tag1']
