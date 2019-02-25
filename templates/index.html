@@ -1,11 +1,18 @@
 <html>
 <body>
-<h1> Sushma </h1>
+<h1> Sushma 1001642046 </h1>
 <form action="/server" method="POST">
     Enter mag 1<br>
     <input type="text" name="tag1"><br>
 
     <input type="submit" value="Submit">
+</form>
+
+<form action="/serverCache" method="POST">
+    Enter mag 1<br>
+    <input type="text" name="tag1"><br>
+
+    <input type="submit" value="Submit thru redis">
 </form>
 
 <h3> Time taken {{ t }}</h3>

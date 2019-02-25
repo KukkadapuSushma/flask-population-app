@@ -1,9 +1,12 @@
 from flask import Flask, render_template, request, flash
 from time import time
 import pyodbc
+import redis
 import csv
 app = Flask(__name__)
 app.secret_key = "Secret"
+
+r = redis.StrictRedis(host='sushma.redis.cache.windows.net', port=6380, db=0, password='fQrhWzt3pQ5QnCBWDzM6GhSQCBCi8p33qLGVexTPn8I=', ssl=True)
 
 connection = pyodbc.connect("Driver={ODBC Driver 13 for SQL Server};Server=tcp:sushmak.database.windows.net,1433;Database=quakes;Uid=sushma@sushmak;Pwd={azure@123};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;")
 cursor = connection.cursor()
@@ -51,8 +54,8 @@ def index():
         time_taken = (end_time - start_time)
         flash('The Average Time taken to execute the random queries is : ' + "%.4f" % time_taken + " seconds")
         cursor.close()
-    return render_template('index.html', t=time_taken)
-'''
+    return render_template('index.html', t=time_taken)'''
+
 
 @app.route('/')
 def index():
@@ -71,3 +74,18 @@ def server():
     e = time()
     t = e-s
     return render_template('magGreater.html', t=str(t), re=re)
+
+@app.route('/serverCache', methods=['GET', 'POST'])
+def serverCache():
+    tag1 = request.form['tag1']
+    queryString = "select count(*) from dbo.quake where mag >=" + tag1
+    if r.get(queryString) == None:
+        s = time()
+        cursor.execute(queryString)
+        data = cursor.fetchall()
+    else:
+        s = time()
+        data = r.get(queryString)
+    e = time()
+    t = e - s
+    return render_template('magGreater.html', t1=t, re1=data)
