@@ -83,13 +83,13 @@ def qstn8():
     query = "select county from dbo.county where state =(Select state from codes where code ="+"'"+tag1+"')"
     if request.method == 'POST':
         print(query)
-        s = time()
+        #s = time()
         cursor.execute(query)
         r = cursor.fetchall()
         print(r)
-    e = time()
-    t = e-s
-    return render_template('magGreater.html', data=r, t=t)
+    #e = time()
+    #t = e-s
+    #return render_template('magGreater.html', data=r, t=t)
 
 
 @app.route('/qstn9', methods=['GET', 'POST'])
@@ -127,6 +127,17 @@ def qstn9():
     t = e-s
     return render_template('magGreater.html', data1=r, t1=t)
 
+
+@app.route('/qstn10', methods=['GET', 'POST'])
+def qstn10():
+    tag1 = request.form['tag10']
+    s = time()
+    for i in range(tag1):
+        qstn8()
+        qstn9()
+    e = time()
+    t = e-s
+    return render_template('magGreater.html', t=t)
 
 @app.route('/serverCache', methods=['GET', 'POST'])
 def serverCache():
