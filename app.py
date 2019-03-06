@@ -49,7 +49,6 @@ def index():
 
 @app.route('/barchart', methods=['POST'])
 def bar():
-    qot = '\''
     if request.form['form'] == 'ShowGraph':
         mag1 = request.form['vmag1']
         mag2 = request.form['vmag2']
