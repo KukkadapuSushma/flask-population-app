@@ -10,10 +10,10 @@ app.secret_key = "Secret"
 
 #r = redis.StrictRedis(host='sushma.redis.cache.windows.net', port=6380, db=0, password='fQrhWzt3pQ5QnCBWDzM6GhSQCBCi8p33qLGVexTPn8I=', ssl=True)
 
-params = urllib.parse.quote_plus("Driver={ODBC Driver 17 for SQL Server};Server=tcp:sushmak.database.windows.net,1433;Database=quakes;Uid=sushma@sushmak;Pwd={azure@123};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;")
+params = urllib.parse.quote_plus("Driver={ODBC Driver 13 for SQL Server};Server=tcp:sushmak.database.windows.net,1433;Database=quakes;Uid=sushma@sushmak;Pwd={azure@123};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;")
 engine = create_engine("mssql+pyodbc:///?odbc_connect=%s" % params)
 
-#connection = pyodbc.connect("Driver={ODBC Driver 13 for SQL Server};Server=tcp:sushmak.database.windows.net,1433;Database=quakes;Uid=sushma@sushmak;Pwd={azure@123};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;")
+#connection = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};Server=tcp:sushmak.database.windows.net,1433;Database=quakes;Uid=sushma@sushmak;Pwd={azure@123};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;")
 #cursor = connection.cursor()
 '''
 @app.route('/')
@@ -46,7 +46,7 @@ def index():
 @app.route('/')
 def index():
     return render_template('index.html')
-
+'''
 @app.route('/barchart', methods=['POST'])
 def bar():
     if request.form['form'] == 'ShowGraph':
@@ -58,7 +58,45 @@ def bar():
         #return render_template('visual.html', a=rows, chartType='Scatter')
         #return render_template('visual.html', a=rows, chartType='Pie')
         return render_template('display.html', a=rows, chartType='Bar')
+'''
 
+@app.route('/qstn6', methods=['GET', 'POST'])
+def qstn6():
+    tag1 = request.form['yr1']
+    tag2 = request.form['r1']
+    tag3 = request.form['r2']
+    tag4 = request.form['r3']
+    tag5 = request.form['r4']
+    tag6 = request.form['r5']
+    tag7 = request.form['r6']
+    if tag1 == '2010':
+        tag1 = 'ten'
+    if tag1 == '2011':
+        tag1 = 'eleven'
+    if tag1 == '2012':
+        tag1 = 'twelve'
+    if tag1 == '2013':
+        tag1 = 'thirteen'
+    if tag1 == '2014':
+        tag1 = 'fourteen'
+    if tag1 == '2015':
+        tag1 = 'fifteen'
+    if tag1 == '2016':
+        tag1 = 'sixteen'
+    if tag1 == '2017':
+        tag1 = 'seventeen'
+    if tag1 == '2018':
+        tag1 = 'eighteen'
+
+    query = "select sum(case when " + tag1 + " <= " + "'" + tag2 + "'" + " and "+ tag1 + " >=" + "'" +tag3 +"'" + " then 1 else 0 end) as states1, sum(case when " + tag1 + " > " + "'" + tag4 + "'" + " and " + tag1 + " <= " + "'" +tag5+"'" + "then 1 else 0 end) as states2, sum(case when " + tag1 + " > " +"'" +tag6+"'"+" and " + tag1 + " <= " +"'" + tag7 + "'" + " then 1 else 0 end) as states3 from popul"
+    if request.method == 'POST':
+        print(query)
+        s = time()
+        r = engine.execute(query).fetchall()
+        print(r)
+    e = time()
+    t = e-s
+    return render_template('magGreater.html', data1=r, t1=t)
 
 
 '''
